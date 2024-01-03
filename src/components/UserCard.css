@@ -1,0 +1,21 @@
+.user-card{
+    background-color: #597199;
+    width: 15rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.img-placeholder {
+    background-color: black;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 10px;
+}
+
+.user-details{
+    text-align: left;
+}
