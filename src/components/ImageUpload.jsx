@@ -2,31 +2,37 @@ import Input from "./UI/Input"
 import { useState } from "react";
 import './ImageUpload.css'
 import axios from 'axios';
+import { useContext } from "react";
+import { UserContext } from "../store/user-context";
 
 export default function ImageUpload(){
 
+    const userCTX = useContext(UserContext);
+
     const [file, setFile] = useState();
     const [imgPreview, setImgPreview] = useState();
+    const [imageTitle, setImageTitle] = useState()
 
     function getUploadedFile(event){
         setFile(event.target.files[0]);
         setImgPreview(URL.createObjectURL(event.target.files[0]))
     }
 
-    function handleImageUpload(){        
-        console.log(file);
+    function handleImageUpload(event){  
+        event.preventDefault();      
+        console.log(userCTX)
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('my-image-file', file, file.name);
+        formData.append('name', userCTX.first_name);
+        formData.append('title', imageTitle);
+        axios.post('http://localhost:3001/upload', formData)
+        .then(res => {
+            console.log('Axios response: ', res)
+        })      
+    }
 
-        axios.post('http://localhost:3001/upload', formData, {
-            headers: {
-                'Content-Type': formData.type
-            }
-        })
-        .then(res => {})
-        .catch(err => console.log(err))
-        
-        
+    function getImageTitle(event){
+        setImageTitle(event.target.value)
     }
 
     return(
@@ -41,7 +47,7 @@ export default function ImageUpload(){
             </div>
             <div className="dialog-inputs">
                 <Input type="file" onChange={getUploadedFile}/>
-                <Input label="Title:" id="title" type="text" />
+                <Input label="Title:" id="title" type="text" onChange={getImageTitle} />
             </div>
             <div className="action-btns">
                 <button onClick={handleImageUpload}>Upload</button>

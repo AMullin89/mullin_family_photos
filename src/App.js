@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import UsersTab from './components/UsersTab';
 import ImageView from './components/ImageView';
 import ImageUpload from './components/ImageUpload';
+import { UserContext } from './store/user-context';
 
 
 
@@ -53,26 +54,31 @@ function App() {
     if (obj.password === password) {
       setIsUserSignedIn(true);
       setUser(obj);
+      console.log(user);
     }else{
       console.log("Incorrect log in details")
     }
   };
 
   return (
-    <div className="App">
-      <Header isUserSignedIn={isUserSignedIn}/>
-      {!isUserSignedIn && <SignIn handleSignIn={handleSignIn}/>}
-      {isUserSignedIn && 
-      <div>
+    <UserContext.Provider value={user}>
+      <div className="App">
+        <Header isUserSignedIn={isUserSignedIn}/>
+        {!isUserSignedIn && <SignIn handleSignIn={handleSignIn}/>}
+        {isUserSignedIn && 
+        <div>
         <h3>Welcome, {user.first_name}</h3>
         <div id="user-interface">
           <UsersTab users={users}/>
           <ImageView imagesData={imagesData}/>
         </div>
         <ImageUpload/>
+        <img src="../../images/test.JPG"/>
       </div>
       }
     </div>
+    </UserContext.Provider>
+
   );
 }
 
