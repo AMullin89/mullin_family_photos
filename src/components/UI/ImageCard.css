@@ -1,0 +1,19 @@
+.image-container {
+    background-color: #2E4682;
+    border-radius: 10px;
+    padding: 0 1rem 0 1rem;
+}
+
+.image-container h4 {
+    text-align: center;
+}
+
+.image-container img {
+    width: 15rem;
+}
+
+.image-container p {
+    margin: 0;
+    text-align: right;
+    font-style: italic;
+}

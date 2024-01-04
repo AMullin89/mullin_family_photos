@@ -2,7 +2,8 @@ import './App.css';
 import Header from './components/Header';
 import SignIn from './components/SignIn';
 import { useState, useEffect } from 'react';
-import UserCard from './components/UserCard';
+import UsersTab from './components/UsersTab';
+import ImageCard from './components/UI/ImageCard';
 
 
 
@@ -11,6 +12,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const [isUserSignedIn, setIsUserSignedIn] = useState(false);
+  const [imagesData, setImagesData] = useState([]);
 
   useEffect(() => {
     async function fetchUsers(){
@@ -24,6 +26,19 @@ function App() {
       setUsers(users);
     }
     fetchUsers();
+
+    async function fetchImages(){
+      const response = await fetch('http://localhost:3001/images');
+
+      if(!response.ok){
+        console.log("Failed to fetch data");
+      }
+
+      const imagesData = await response.json();
+      setImagesData(imagesData);
+
+    }
+    fetchImages();
   }, []);
 
   function handleSignIn(email, password){
@@ -49,7 +64,10 @@ function App() {
       {isUserSignedIn && 
       <div>
         <h3>Welcome, {user.first_name}</h3>
-        {users.map((user) => <li key={user.id}><UserCard user={user}/></li>)}
+        <div id="user-interface">
+          <UsersTab users={users}/>
+          <ImageCard imagesData={imagesData}/>
+        </div>
       </div>
       }
     </div>
