@@ -4,6 +4,7 @@ import SignIn from './components/SignIn';
 import { useState, useEffect } from 'react';
 import UsersTab from './components/UsersTab';
 import ImageView from './components/ImageView';
+import ImageUpload from './components/ImageUpload';
 
 
 
@@ -68,6 +69,7 @@ function App() {
           <UsersTab users={users}/>
           <ImageView imagesData={imagesData}/>
         </div>
+        <ImageUpload/>
       </div>
       }
     </div>
