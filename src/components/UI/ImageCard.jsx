@@ -1,19 +1,14 @@
 import './ImageCard.css'
 
-export default function ImageCard({imagesData}){
+export default function ImageCard({image}){
     return (
-        <div>
-            {imagesData.map((image) =>         
-            <div className="image-container">
+        <div className="image-container">
             <h4>{image.title}</h4>
             <img src={image.file_path} alt={image.title}/>
             <p>Uploaded by {image.first_name}</p>
             <div className="img-actions">
                 <p>Icons to appear here</p>
             </div>
-            </div>)}
         </div>
-
-
     )
 }

@@ -3,7 +3,7 @@ import Header from './components/Header';
 import SignIn from './components/SignIn';
 import { useState, useEffect } from 'react';
 import UsersTab from './components/UsersTab';
-import ImageCard from './components/UI/ImageCard';
+import ImageView from './components/ImageView';
 
 
 
@@ -66,7 +66,7 @@ function App() {
         <h3>Welcome, {user.first_name}</h3>
         <div id="user-interface">
           <UsersTab users={users}/>
-          <ImageCard imagesData={imagesData}/>
+          <ImageView imagesData={imagesData}/>
         </div>
       </div>
       }
