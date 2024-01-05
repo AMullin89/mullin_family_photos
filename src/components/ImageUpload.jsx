@@ -1,11 +1,13 @@
 import Input from "./UI/Input"
-import { useState } from "react";
+import { useState, useContext } from "react";
+import './SignIn.css'
 import './ImageUpload.css'
+import Modal from "./UI/Modal";
 import axios from 'axios';
-import { useContext } from "react";
 import { UserContext } from "../store/user-context";
 
-export default function ImageUpload(){
+
+export default function ImageUpload({open, handleCloseUpload}){
 
     const userCTX = useContext(UserContext);
 
@@ -35,9 +37,13 @@ export default function ImageUpload(){
         setImageTitle(event.target.value)
     }
 
+    function closeUpload(){
+        handleCloseUpload()
+    }
+
+
     return(
-        <div>
-            <div className="dialog">
+        <Modal className="dialog img-upload-dialog" open={open} id="img-upload-dialog">
             <header className="dialog-header">
                 <h2>Upload Image</h2>
             </header>
@@ -51,9 +57,8 @@ export default function ImageUpload(){
             </div>
             <div className="action-btns">
                 <button onClick={handleImageUpload}>Upload</button>
-                <button>Cancel</button>
+                <button onClick={closeUpload}>Cancel</button>
             </div>
-        </div> 
-        </div>
+        </Modal> 
     )
 }

@@ -15,6 +15,7 @@ function App() {
   const [user, setUser] = useState({});
   const [isUserSignedIn, setIsUserSignedIn] = useState(false);
   const [imagesData, setImagesData] = useState([]);
+  const [showUpload, setShowUpload] = useState(false)
 
   useEffect(() => {
     async function fetchUsers(){
@@ -43,6 +44,15 @@ function App() {
     fetchImages();
   }, []);
 
+  function handleShowUpload(){
+    setShowUpload(true);
+  }
+
+  function handleCloseUpload(){
+    setShowUpload(false);
+    console.log("Clicked Cancel")
+  }
+
   function handleSignIn(email, password){
     let obj = users.find(o => o.email === email);
 
@@ -54,7 +64,6 @@ function App() {
     if (obj.password === password) {
       setIsUserSignedIn(true);
       setUser(obj);
-      console.log(user);
     }else{
       console.log("Incorrect log in details")
     }
@@ -63,7 +72,7 @@ function App() {
   return (
     <UserContext.Provider value={user}>
       <div className="App">
-        <Header isUserSignedIn={isUserSignedIn}/>
+        <Header isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload}/>
         {!isUserSignedIn && <SignIn handleSignIn={handleSignIn}/>}
         {isUserSignedIn && 
         <div>
@@ -72,7 +81,7 @@ function App() {
           <UsersTab users={users}/>
           <ImageView imagesData={imagesData}/>
         </div>
-        <ImageUpload/>
+        <ImageUpload open={showUpload} handleCloseUpload={handleCloseUpload}/>
         <img src="../../images/test.JPG"/>
       </div>
       }

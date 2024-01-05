@@ -7,7 +7,9 @@ export default function ImageCard({image}){
             <img src={image.file_path} alt={image.title}/>
             <p>Uploaded by {image.first_name}</p>
             <div className="img-actions">
-                <p>Icons to appear here</p>
+                <i class="fi fi-ts-comment-alt-dots"></i>
+                <i class="fi fi-rs-heart"></i>
+                <i class="fi fi-rr-star"></i>
             </div>
         </div>
     )

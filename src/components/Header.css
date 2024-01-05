@@ -11,3 +11,8 @@
     display: flex;
     gap: 2rem;
 }
+
+li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -1,3 +1,11 @@
+.img-upload-dialog {
+    padding: 0 0 2rem 0;
+}
+
+.img-upload-dialog header {
+    margin-top: 0;
+}
+
 #img-preview-container {
     display: flex;
     justify-content: center;
@@ -6,3 +14,4 @@
 #image-preview {
     width: 50%;
 }
+
