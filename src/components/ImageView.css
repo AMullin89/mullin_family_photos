@@ -1,11 +1,19 @@
 #image-container {
     background-color: #2E4682;
     width: 40rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    padding: 0.5rem;
+    padding: 1rem;
     border-radius: 10px;
+}
+
+#image-container h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+#images {
+    display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
 }

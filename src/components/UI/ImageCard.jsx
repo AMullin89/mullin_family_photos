@@ -1,12 +1,16 @@
 import './ImageCard.css'
 import Comment from '../Comment'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
+import { UserContext } from '../../store/user-context';
 
-export default function ImageCard({image}){
+
+export default function ImageCard({image, fetchImages}){
 
     const [commentOpen, setCommentOpen] = useState(false);
     const [comments, setComments] = useState([])
+
+    const userCTX = useContext(UserContext);
 
     async function getComments(){
             const response = await axios.get('http://localhost:3001/comments')
@@ -28,6 +32,22 @@ export default function ImageCard({image}){
         setCommentOpen(false);
     }
 
+    async function deleteImage(){
+        const formData = new FormData();
+        formData.append('image_id', image.id);
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        await axios.post('http://localhost:3001/deleteimage', formData, options)
+                   .then(res => {
+                    console.log("Axios response:", res);
+                    })
+        getComments();
+        fetchImages();
+    }
+
     return (
         <div className="image-container">
             <h4>{image.title}</h4>
@@ -39,6 +59,7 @@ export default function ImageCard({image}){
                 <i class="fi fi-ts-comment-alt-dots" onClick={openCommentDialog}></i>
                 <i class="fi fi-rs-heart"></i>
                 <i class="fi fi-rr-star"></i>
+                {userCTX.id === image.user_id && <i onClick={deleteImage} class="fi fi-rs-trash"></i>}
             </div>
         <Comment image={image} open={commentOpen} closeCommentDialog={closeCommentDialog} comments={comments} getComments={getComments} />
         </div>

@@ -1,16 +1,17 @@
 import './CommentCard.css';
 import axios from 'axios';
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
+import { UserContext } from '../../store/user-context';
 
 export default function CommentCard({comment}){
 
     const commentCard = useRef();
+    const userCTX = useContext(UserContext);
 
         async function deleteComment(){
 
         const formData = new FormData();
         formData.append('comment_id', comment.id);
-        console.log(comment);
         const options = {
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +32,7 @@ export default function CommentCard({comment}){
                 <h4 className="author">{comment.first_name}</h4>
                 <p className="comment">{comment.comment}</p>
             </div>
-            <i onClick={deleteComment} class="fi fi-rs-trash"></i>
+            {userCTX.id === comment.user_id && <i onClick={deleteComment} class="fi fi-rs-trash"></i>}
         </div>
 
     )

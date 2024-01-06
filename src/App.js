@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import UsersTab from './components/UsersTab';
 import ImageView from './components/ImageView';
 import ImageUpload from './components/ImageUpload';
+import PostsView from './components/PostsView';
 import { UserContext } from './store/user-context';
 
 
@@ -26,6 +27,7 @@ function App() {
 
       const imagesData = await response.json();
       setImagesData(imagesData);
+      console.log(imagesData);
 
     }
 
@@ -83,10 +85,11 @@ function App() {
         {!isUserSignedIn && <SignIn handleSignIn={handleSignIn}/>}
         {isUserSignedIn && 
         <div>
-        <h3>Welcome, {user.first_name}</h3>
+        <h3 id="welcome-message">Welcome, {user.first_name}</h3>
         <div id="user-interface">
           <UsersTab users={users}/>
-          <ImageView imagesData={imagesData}/>
+          <ImageView imagesData={imagesData} fetchImages={fetchImages}/>
+          <PostsView/>
         </div>
         <ImageUpload open={showUpload} handleCloseUpload={handleCloseUpload} fetchImages={fetchImages}/>
         <img src="../../images/test.JPG"/>
