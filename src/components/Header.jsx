@@ -1,9 +1,13 @@
 import './Header.css';
 
-export default function Header({isUserSignedIn, handleShowUpload}){
+export default function Header({isUserSignedIn, handleShowUpload, handleSignOut}){
 
     function openUpload(){
         handleShowUpload()
+    }
+
+    function signOut(){
+        handleSignOut();
     }
 
 
@@ -15,7 +19,7 @@ export default function Header({isUserSignedIn, handleShowUpload}){
                 <div>
                     <ul id="nav">
                         <li onClick={openUpload}>Upload</li>
-                        <li>Sign Out</li>
+                        <li onClick={signOut}>Sign Out</li>
                     </ul>
                 </div>
             </div>}

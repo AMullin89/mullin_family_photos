@@ -7,7 +7,7 @@ import axios from 'axios';
 import { UserContext } from "../store/user-context";
 
 
-export default function ImageUpload({open, handleCloseUpload}){
+export default function ImageUpload({open, handleCloseUpload, fetchImages}){
 
     const userCTX = useContext(UserContext);
 
@@ -20,17 +20,20 @@ export default function ImageUpload({open, handleCloseUpload}){
         setImgPreview(URL.createObjectURL(event.target.files[0]))
     }
 
-    function handleImageUpload(event){  
+    async function handleImageUpload(event){  
         event.preventDefault();      
         console.log(userCTX)
         const formData = new FormData();
         formData.append('my-image-file', file, file.name);
-        formData.append('name', userCTX.first_name);
+        formData.append('id', userCTX.id);
         formData.append('title', imageTitle);
-        axios.post('http://localhost:3001/upload', formData)
+        await axios.post('http://localhost:3001/upload', formData)
         .then(res => {
             console.log('Axios response: ', res)
-        })      
+        })   
+        
+        fetchImages();
+        closeUpload();
     }
 
     function getImageTitle(event){

@@ -1,10 +1,11 @@
 #image-container {
     background-color: #2E4682;
-    width: 60%;
+    width: 40rem;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: 2rem;
-    padding: 1rem;
+    padding: 0.5rem;
     border-radius: 10px;
 }

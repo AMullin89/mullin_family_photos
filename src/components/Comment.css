@@ -1,0 +1,13 @@
+#comment-dialog {
+    max-width: 40rem;
+}
+
+#img-comment {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#comments h3 {
+    padding-left: 1rem;
+}

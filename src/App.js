@@ -17,6 +17,18 @@ function App() {
   const [imagesData, setImagesData] = useState([]);
   const [showUpload, setShowUpload] = useState(false)
 
+  async function fetchImages(){
+      const response = await fetch('http://localhost:3001/images');
+
+      if(!response.ok){
+        console.log("Failed to fetch data");
+      }
+
+      const imagesData = await response.json();
+      setImagesData(imagesData);
+
+    }
+
   useEffect(() => {
     async function fetchUsers(){
       const response = await fetch('http://localhost:3001/users');
@@ -30,17 +42,7 @@ function App() {
     }
     fetchUsers();
 
-    async function fetchImages(){
-      const response = await fetch('http://localhost:3001/images');
-
-      if(!response.ok){
-        console.log("Failed to fetch data");
-      }
-
-      const imagesData = await response.json();
-      setImagesData(imagesData);
-
-    }
+    
     fetchImages();
   }, []);
 
@@ -69,10 +71,15 @@ function App() {
     }
   };
 
+  function handleSignOut(){
+    setIsUserSignedIn(false);
+    setUser({});
+  }
+
   return (
     <UserContext.Provider value={user}>
       <div className="App">
-        <Header isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload}/>
+        <Header isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload} handleSignOut={handleSignOut}/>
         {!isUserSignedIn && <SignIn handleSignIn={handleSignIn}/>}
         {isUserSignedIn && 
         <div>
@@ -81,7 +88,7 @@ function App() {
           <UsersTab users={users}/>
           <ImageView imagesData={imagesData}/>
         </div>
-        <ImageUpload open={showUpload} handleCloseUpload={handleCloseUpload}/>
+        <ImageUpload open={showUpload} handleCloseUpload={handleCloseUpload} fetchImages={fetchImages}/>
         <img src="../../images/test.JPG"/>
       </div>
       }

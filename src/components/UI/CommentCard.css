@@ -1,0 +1,25 @@
+.comment-card-container {
+    background-color: #2E4682;
+    width: 50%;
+    border-radius: 10px;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.5rem 0 0.5rem;
+}
+
+.author {
+    margin-bottom: 0;
+    text-decoration: underline;
+    text-align: left !important;
+}
+
+.comment{
+    font-style: normal !important;
+    text-align: center !important;
+    font-weight: 350;
+    padding-bottom: 0.5rem;
+    color: white;
+}
+
