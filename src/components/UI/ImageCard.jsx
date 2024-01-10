@@ -52,13 +52,14 @@ export default function ImageCard({image, fetchImages}){
                 'Content-Type': 'application/json',
             }
         };
-        await axios.post('http://localhost:3001/deleteimage', formData, options)
+        await axios.post(apiCtx + '/deleteimage', formData, options)
                    .then(res => {
                     console.log("Axios response:", res);
                     })
         getComments();
         fetchImages();
     }
+
 
     return (
         <div className="image-container">

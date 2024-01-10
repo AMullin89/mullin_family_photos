@@ -1,0 +1,19 @@
+.message-card {
+    width: 15rem;
+    background-color: #2E4682;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    padding: 0.2rem 0 0.2rem 0;
+}
+
+.message-card h3 {
+    margin: 0;
+}
+
+
+.date-time {
+    font-style: italic;
+    margin-top: 0;
+}

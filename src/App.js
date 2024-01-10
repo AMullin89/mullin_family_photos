@@ -9,6 +9,7 @@ import PostsView from './components/PostsView';
 import { UserContext } from './store/user-context';
 import { APIContext } from './store/api-context';
 import axios from 'axios';
+import Message from './components/UI/MessageContainer';
 
 
 
@@ -21,6 +22,7 @@ function App() {
   const [imagesData, setImagesData] = useState([]);
   const [showUpload, setShowUpload] = useState(false)
   const [apiUrl, setApiUrl] = useState('http://localhost:3001');
+  const [showMessages, setShowMessages] = useState(false)
 
   async function fetchImages(){
 
@@ -53,6 +55,14 @@ function App() {
 
   function handleCloseUpload(){
     setShowUpload(false);
+  }
+
+  function handleShowMessages(){
+    setShowMessages(true);
+  }
+
+  function handleCloseMessages(){
+    setShowMessages(false);
   }
 
   async function handleSignIn(email, password){
@@ -88,7 +98,7 @@ function App() {
     <APIContext.Provider value={apiUrl}>
       <UserContext.Provider value={user}>
       <div className="App">
-        <Header isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload} handleSignOut={handleSignOut}/>
+        <Header isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload} handleShowMessages={handleShowMessages} handleSignOut={handleSignOut}/>
         {!isUserSignedIn && <SignIn handleSignIn={handleSignIn}/>}
         {isUserSignedIn && 
         <div>
@@ -99,7 +109,7 @@ function App() {
           <PostsView/>
         </div>
         <ImageUpload open={showUpload} handleCloseUpload={handleCloseUpload} fetchImages={fetchImages}/>
-        <img src="../../images/test.JPG"/>
+        <Message open={showMessages} handleCloseMessages={handleCloseMessages}/>
       </div>
       }
     </div>

@@ -11,7 +11,7 @@ export default function ImageView({imagesData, fetchImages, handleShowUpload}){
                 <i onClick={handleShowUpload} class="fi fi-br-plus"></i>
             </header>
             <div id="images">
-                {imagesData.map((image) => <ImageCard fetchImages={fetchImages} image={image}/>)}
+                {imagesData.map((image) => <ImageCard key={image.id} fetchImages={fetchImages} image={image}/>)}
             </div>
         </div>
     )

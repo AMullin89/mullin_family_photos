@@ -50,7 +50,7 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
             </div>
             <div id="comments">
                 <h3>Comments</h3>
-               {comments ? comments.map((comment) => <CommentCard comment={comment}/>) : <p>Be the first to comment!</p>}
+               {comments ? comments.map((comment) => <CommentCard key={comment.id} comment={comment}/>) : <p>Be the first to comment!</p>}
             </div>
             <div className="dialog-inputs">
                 <textarea ref={textArea} maxLength="255" rows="5" onChange={handleInputChange}></textarea>

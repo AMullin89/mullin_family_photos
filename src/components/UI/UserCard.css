@@ -4,18 +4,28 @@
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    gap: 2rem;
     border-radius: 10px;
     margin-bottom: 1rem;
+    padding: 0.5rem 0 0.5rem 1rem;
 }
 
-.img-placeholder {
-    background-color: black;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 10px;
+.profile-pic {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50px;
+    object-fit: cover;
+    border: 2px solid black;
 }
 
 .user-details{
     text-align: left;
+}
+
+.user-card h4 {
+    margin: 0 0.5rem;
+}
+
+.user-card p {
+    margin: 0 0.5rem;
 }
