@@ -5,5 +5,34 @@
     width: 20%;
     background-color: #2E4682;
     border-radius: 10px;
-    padding: 0 1rem;
+    padding: 1rem;
+    overflow-y: scroll;
+    height: 90vh;
+}
+
+#posts-header {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0 10px 10px 0;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #2E4682;
+    border-radius: 0 10px 10px 0;
+    border: 3px solid #ffffff;
+}
+
+#posts-container h3 {
+    margin-bottom: 0;
+    margin-top: 0;
 }

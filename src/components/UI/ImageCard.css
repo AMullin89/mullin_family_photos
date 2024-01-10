@@ -35,3 +35,11 @@ i:hover {
     cursor: pointer;
     transform: scale(1.2);
 }
+
+.favourited {
+    color: yellow;
+}
+
+.liked {
+    color: red;
+}

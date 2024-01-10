@@ -1,15 +1,18 @@
 import Input from "./UI/Input"
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import './SignIn.css'
 import './ImageUpload.css'
 import Modal from "./UI/Modal";
 import axios from 'axios';
 import { UserContext } from "../store/user-context";
+import { APIContext } from "../store/api-context";
 
 
 export default function ImageUpload({open, handleCloseUpload, fetchImages}){
 
     const userCTX = useContext(UserContext);
+    const apiCTX = useContext(APIContext);
+    const fileUpload = useRef();
 
     const [file, setFile] = useState();
     const [imgPreview, setImgPreview] = useState();
@@ -27,7 +30,7 @@ export default function ImageUpload({open, handleCloseUpload, fetchImages}){
         formData.append('my-image-file', file, file.name);
         formData.append('id', userCTX.id);
         formData.append('title', imageTitle);
-        await axios.post('http://localhost:3001/upload', formData)
+        await axios.post(apiCTX + '/upload', formData)
         .then(res => {
             console.log('Axios response: ', res)
         })   
@@ -42,6 +45,8 @@ export default function ImageUpload({open, handleCloseUpload, fetchImages}){
 
     function closeUpload(){
         handleCloseUpload()
+        setImgPreview();
+        fileUpload.current.value = '';
     }
 
 
@@ -52,10 +57,10 @@ export default function ImageUpload({open, handleCloseUpload, fetchImages}){
             </header>
             <p>Please select your image and give it a title!</p>
             <div id="img-preview-container">
-                { file ? <img id="image-preview" alt="Preview" src={imgPreview}/> : <p>No file to preview</p>}
+                { imgPreview ? <img id="image-preview" alt="Preview" src={imgPreview}/> : <p>No file to preview</p>}
             </div>
             <div className="dialog-inputs">
-                <Input type="file" onChange={getUploadedFile}/>
+                <input ref={fileUpload}  type="file" onChange={getUploadedFile}/>
                 <Input label="Title:" id="title" type="text" onChange={getImageTitle} />
             </div>
             <div className="action-btns">

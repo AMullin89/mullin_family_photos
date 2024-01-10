@@ -5,12 +5,14 @@ import { useContext, useState, useRef } from "react";
 import { UserContext } from "../store/user-context";
 import axios from "axios";
 import CommentCard from "./UI/CommentCard";
+import { APIContext } from "../store/api-context";
 
 export default function Comment({open, image, closeCommentDialog, comments, getComments}){
 
     const [input, setInput] = useState('');
     const textArea = useRef();
     const userCTX = useContext(UserContext);
+    const apiCTX = useContext(APIContext);
 
     function handleInputChange(event){
         setInput(event.target.value)
@@ -31,7 +33,7 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
             }
         };
 
-        await axios.post('http://localhost:3001/comment', formData, options)
+        await axios.post(apiCTX + '/comment', formData, options)
         .then(res => {
             console.log("Axios response:", res)
         })
