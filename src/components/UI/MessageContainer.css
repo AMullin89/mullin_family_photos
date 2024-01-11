@@ -1,0 +1,39 @@
+#message-view {
+    display: flex;
+    gap: 1rem;
+}
+
+#message {
+    border-left: 2px solid black;
+    padding-left: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+#messages-list {
+    overflow-y: auto;
+    width: 75%;
+}
+
+#new-message {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 80%;
+    margin: 1rem auto;
+}
+
+select {
+    font-family: inherit;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 10px;
+}
+
+textarea {
+    font-family: inherit;
+    font-size: 1.1rem;
+    border-radius: 10px;
+}

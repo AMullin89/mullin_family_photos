@@ -8,6 +8,7 @@ import ImageUpload from './components/ImageUpload';
 import PostsView from './components/PostsView';
 import { UserContext } from './store/user-context';
 import { APIContext } from './store/api-context';
+import { UsersContext } from './store/users-context';
 import axios from 'axios';
 import Message from './components/UI/MessageContainer';
 
@@ -94,7 +95,7 @@ function App() {
   }
 
   return (
-    
+    <UsersContext.Provider value={users}>
     <APIContext.Provider value={apiUrl}>
       <UserContext.Provider value={user}>
       <div className="App">
@@ -115,6 +116,7 @@ function App() {
     </div>
     </UserContext.Provider>
     </APIContext.Provider>
+    </UsersContext.Provider>
 
   );
 }
