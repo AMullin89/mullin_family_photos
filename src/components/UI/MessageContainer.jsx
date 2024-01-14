@@ -1,22 +1,32 @@
 import Modal from "./Modal";
 import Message from "./Message";
 import axios from "axios";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { APIContext } from "../../store/api-context";
 import { UsersContext } from "../../store/users-context";
 import { UserContext } from "../../store/user-context";
+import getDateTime from "../Util/timeDateUtil";
 import './MessageContainer.css'
+import Input from "./Input";
 
 
 
 export default function MessageContainer({open, handleCloseMessages}){
 
-    const [messages, setMessages] = useState([])
-    const [selectedMessage, setSelectedMessage] = useState()
-    const [newMessage, setNewMessage] = useState(false)
+    const [messages, setMessages] = useState([]);
+    const [selectedMessage, setSelectedMessage] = useState();
+    const [newMessage, setNewMessage] = useState(false);
+    const [receiver, setReceiver] = useState(1);
+    const [message, setMessage] = useState();
+    const [messageTitle, setMessageTitle] = useState();
+
+    const titleInput = useRef();
+    const textarea = useRef();
+
     const apiCtx = useContext(APIContext);
     const usersCtx = useContext(UsersContext);
     const userCtx = useContext(UserContext)
+
 
 
 
@@ -45,6 +55,46 @@ export default function MessageContainer({open, handleCloseMessages}){
         setNewMessage(false);
     }
 
+    async function sendMessage(){
+        
+        const dateTime = getDateTime();
+        const formData = new FormData();
+
+        formData.append('receiver', receiver);
+        formData.append('title', messageTitle);
+        formData.append('message', message);
+        formData.append('sender', userCtx.id);
+        formData.append('sent', dateTime)
+        titleInput.current.value = '';
+        textarea.current.value = '';
+        setMessage();
+        hideNewMessage();
+
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+
+        await axios.post(apiCtx + '/message', formData, options)
+        .then(res => {
+            console.log("Axios response:", res)
+        });
+
+    }
+
+    function getReceiver(event){
+        setReceiver(event.target.value);
+    }
+
+    function getMessage(event){
+        setMessage(event.target.value);
+    }
+
+    function getMessageTitle(event){
+        setMessageTitle(event.target.value)
+    }
+
     return (
         <Modal className="dialog img-upload-dialog" open={open} id="img-upload-dialog">
             <header className="dialog-header">
@@ -70,12 +120,15 @@ export default function MessageContainer({open, handleCloseMessages}){
             </>}
             {newMessage && 
             <div id="new-message">
-                <select>
-                    {usersCtx.map(user => <option key={user.id} value={user.first_name + ' ' + user.last_name}>{user.first_name + ' ' + user.last_name}</option>)}
+                <label htmlFor="to">To:</label>
+                <select id="to" onChange={getReceiver}>
+                    {usersCtx.map(user => <option key={user.id} value={user.id}>{user.first_name + ' ' + user.last_name}</option>)}
                 </select>
-                <textarea rows="10"></textarea>
+                <Input ref={titleInput} label="Title" type="text" id="title" onChange={getMessageTitle} />
+                <label htmlFor="message">Message</label>
+                <textarea ref={textarea} id="message" onChange={getMessage} rows="10"></textarea>
                 <div className="action-btns">
-                    <button>Send</button>
+                    <button onClick={sendMessage}>Send</button>
                     <button onClick={hideNewMessage}>Back</button>
                 </div>
 

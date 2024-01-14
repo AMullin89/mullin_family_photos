@@ -10,12 +10,14 @@
 
 .message-card h3 {
     margin: 0;
+    font-size: 1rem;
 }
 
 
 .date-time {
     font-style: italic;
-    margin-top: 0;
+    margin: 0;
+    font-size: small;
 }
 
 .message-card:hover{

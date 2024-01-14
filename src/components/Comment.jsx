@@ -11,8 +11,8 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
 
     const [input, setInput] = useState('');
     const textArea = useRef();
-    const userCTX = useContext(UserContext);
-    const apiCTX = useContext(APIContext);
+    const userCtx = useContext(UserContext);
+    const apiCtx = useContext(APIContext);
 
     function handleInputChange(event){
         setInput(event.target.value)
@@ -23,7 +23,7 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
         const formData = new FormData()
         formData.append('comment', input);
         formData.append('image_id', image.id);
-        formData.append('user_id', userCTX.id);
+        formData.append('user_id', userCtx.id);
         textArea.current.value = '';
         setInput('');
 
@@ -33,7 +33,7 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
             }
         };
 
-        await axios.post(apiCTX + '/comment', formData, options)
+        await axios.post(apiCtx + '/comment', formData, options)
         .then(res => {
             console.log("Axios response:", res)
         })

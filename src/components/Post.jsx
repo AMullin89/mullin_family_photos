@@ -32,7 +32,7 @@ export default function Post({post, getPosts}){
         <div className="post-container">
             <h3>{post.first_name} {post.last_name}</h3>
             <p className="post-date">{post.date}</p>
-            <p>{post.post}</p>
+            <p className="post-content">{post.post}</p>
             <div className="post-actions">
                 <i class="fi fi-ts-comment-alt-dots" ></i>
                 <i class="fi fi-rs-heart"></i>

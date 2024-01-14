@@ -11,8 +11,9 @@ import { APIContext } from './store/api-context';
 import { UsersContext } from './store/users-context';
 import axios from 'axios';
 import Message from './components/UI/MessageContainer';
-
-
+import RecentActivity from './components/RecentActivity';
+import { io } from 'socket.io-client';
+const socket = io.connect("http://localhost:3001")
 
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
   const [showUpload, setShowUpload] = useState(false)
   const [apiUrl, setApiUrl] = useState('http://localhost:3001');
   const [showMessages, setShowMessages] = useState(false)
+
+
+  
+
 
   async function fetchImages(){
 
@@ -49,6 +54,12 @@ function App() {
     fetchUsers();
     fetchImages();
   }, [isUserSignedIn]);
+
+  useEffect(() => {
+            socket.on('update_users', ()=> {
+            fetchUsers();
+        })
+  }, [socket])
 
   function handleShowUpload(){
     setShowUpload(true);
@@ -82,6 +93,7 @@ function App() {
       const response = await axios.post(apiUrl + '/signin', formData, options);
       setUser(response.data);
       setIsUserSignedIn(true);
+      socket.emit("sign_in");
     } catch (error) {
       console.error('Login error:', error);
     }
@@ -89,9 +101,28 @@ function App() {
     
   };
 
-  function handleSignOut(){
-    setIsUserSignedIn(false);
-    setUser({});
+  async function handleSignOut(){
+    
+    const formData = new FormData();
+    formData.append('user_id', user.id )
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    try {
+      await axios.post(apiUrl + '/signout', formData, options);
+      setIsUserSignedIn(false);
+      setUser({});
+      socket.emit('sign_in')
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+    
+
+ 
   }
 
   return (
@@ -105,7 +136,10 @@ function App() {
         <div>
         <h3 id="welcome-message">Welcome, {user.first_name}</h3>
         <div id="user-interface">
-          <UsersTab users={users}/>
+          <div id="activity-users-container">
+            <RecentActivity/>
+            <UsersTab users={users}/>
+          </div>
           <ImageView imagesData={imagesData} fetchImages={fetchImages} handleShowUpload={handleShowUpload}/>
           <PostsView/>
         </div>

@@ -4,12 +4,16 @@ import { useState, useContext } from "react";
 import { UserContext } from "../store/user-context";
 import getDateTime from "./Util/timeDateUtil";
 import { APIContext } from "../store/api-context";
+import { io } from 'socket.io-client';
+const socket = io.connect("http://localhost:3001")
 
 export default function CreatePost({open, handleCloseCreatePost, getPosts}){
 
     const [post, setPost] = useState('');
     const userCTX = useContext(UserContext);
     const apiCTX = useContext(APIContext);
+
+    
 
     
 
@@ -22,6 +26,7 @@ export default function CreatePost({open, handleCloseCreatePost, getPosts}){
         formData.append('user_id', userCTX.id);
         formData.append('post', post);
         formData.append('date', dateTime);
+        formData.append('activity', 'created a post.')
 
         const options = {
             headers: {
@@ -29,12 +34,18 @@ export default function CreatePost({open, handleCloseCreatePost, getPosts}){
             }
         };
 
+        socket.emit("new_activity", formData)
+
+        await axios.post(apiCTX + '/activity', formData, options);
+
         await axios.post(apiCTX + '/newpost', formData, options)
                    .then(res => {
                         console.log("Axios response:", res)
                     })
                     .then(getPosts())
                     .then(handleCloseCreatePost());
+
+        
     
     }
     function getUserPost(event){

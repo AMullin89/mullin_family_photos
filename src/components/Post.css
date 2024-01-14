@@ -6,11 +6,17 @@
 
 .post-container h3 {
     margin-top: 0;
+    font-size: 1rem;
 }
 
 .post-date {
     font-style: italic;
     margin: 0;
+    font-size: small;
+}
+
+.post-content {
+    font-size: 0.9rem;
 }
 
 .post-actions {

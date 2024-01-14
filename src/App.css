@@ -12,3 +12,9 @@ li {
   gap: 2rem;
 }
 
+#activity-users-container {
+  display: flex;
+  flex-direction: column;
+  height: 95vh;
+  gap: 2.6rem;
+}

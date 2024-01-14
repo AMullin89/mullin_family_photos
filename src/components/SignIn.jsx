@@ -1,6 +1,8 @@
 import './SignIn.css'
 import Input from './UI/Input'
 import { useState } from 'react'
+import { io } from 'socket.io-client';
+const socket = io.connect("http://localhost:3001")
 
 export default function SignIn({ handleSignIn}){
 
@@ -22,6 +24,7 @@ export default function SignIn({ handleSignIn}){
 
     function handleLogIn(){
         handleSignIn(userEmail, userPassword);
+
     }
 
     return (
