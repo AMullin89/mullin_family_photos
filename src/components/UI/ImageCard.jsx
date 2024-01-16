@@ -51,6 +51,9 @@ export default function ImageCard({image, fetchImages}){
             formData.append('liked', true)
             await axios.post(apiCtx + '/liked', formData, options)
             setLiked(true);
+
+            formData.append('activity', 'liked a photo.');
+            await axios.post(apiCtx + '/activity', formData, options);
         }else{
             formData.append('liked', false)
             await axios.post(apiCtx + '/liked', formData, options)
@@ -58,7 +61,7 @@ export default function ImageCard({image, fetchImages}){
         }
 
         socket.emit('liked_image');
-        
+        socket.emit('new_activity');
     }
 
     function openCommentDialog(){

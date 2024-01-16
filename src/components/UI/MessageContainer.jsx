@@ -5,6 +5,8 @@ import { useState, useContext, useEffect, useRef } from "react";
 import { APIContext } from "../../store/api-context";
 import { UsersContext } from "../../store/users-context";
 import { UserContext } from "../../store/user-context";
+import { MessagesContext } from "../../store/messages-context";
+import { useSocket } from "../../store/socket-context";
 import getDateTime from "../Util/timeDateUtil";
 import './MessageContainer.css'
 import Input from "./Input";
@@ -14,25 +16,29 @@ import DialogHeader from "./DialogHeader";
 
 export default function MessageContainer({open, handleCloseMessages}){
 
-    const [messages, setMessages] = useState([]);
+    
     const [selectedMessage, setSelectedMessage] = useState();
     const [newMessage, setNewMessage] = useState(false);
     const [receiver, setReceiver] = useState(1);
     const [message, setMessage] = useState();
     const [messageTitle, setMessageTitle] = useState();
+    const [unreadMessages, setUnreadMessages] = useState([]);
+
+    const [messages, setMessages] = useState([]);
+    
 
     const titleInput = useRef();
     const textarea = useRef();
+    const socket = useSocket();
 
     const apiCtx = useContext(APIContext);
     const usersCtx = useContext(UsersContext);
-    const userCtx = useContext(UserContext)
-
-
+    const userCtx = useContext(UserContext);
+    const messagesCtx = useContext(MessagesContext);
 
 
     useEffect(() => {
-            async function getMessages(){
+    async function getMessages(){
         try {
             const response = await axios.get(apiCtx + '/messages');
             setMessages(response.data);
@@ -42,12 +48,19 @@ export default function MessageContainer({open, handleCloseMessages}){
         }
     }
         getMessages()
+        console.log(messages)
     }, [])
 
-    useEffect(() => {
-    console.log(messages, userCtx);
-}, [messages, userCtx]);
+        useEffect(() => {
+        function getUnreadMessages(){
+            setUnreadMessages(messages.filter((message) => message.unread === '1'));
+        }
 
+        if(messages){
+        getUnreadMessages()
+        console.log(unreadMessages);
+        }
+    }, [messages])
 
     function handleSelectMessage(message){
         setSelectedMessage(message);
@@ -91,6 +104,8 @@ export default function MessageContainer({open, handleCloseMessages}){
         .then(res => {
             console.log("Axios response:", res)
         });
+
+        socket.emit('new_message');
 
     }
 

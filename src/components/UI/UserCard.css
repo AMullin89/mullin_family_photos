@@ -29,3 +29,22 @@
 .user-card p {
     margin: 0 0.5rem;
 }
+
+.indicator {
+    
+    width: 0.25rem;
+    height: 0.25rem;
+    padding: 0.5rem;
+    border-radius: 100%;
+    
+}
+
+.online-indicator {
+    background-color: green;
+    box-shadow: 0 0 15px green;
+}
+
+.offline-indicator {
+    background-color: red;
+    box-shadow: 0 0 15px red;
+}

@@ -18,6 +18,25 @@ header h1 {
     margin-right: 2rem;
 }
 
+#messages-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#unread-count {
+    background-color: red;
+    font-weight: bold;
+    font-size: small;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0.25rem;
+    height: 0.25rem;
+    padding: 0.5rem;
+    border-radius: 100%;
+
+}
+
 li:hover {
     text-decoration: underline;
     cursor: pointer;

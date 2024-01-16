@@ -11,7 +11,10 @@ export const SocketProvider = ({ children }) => {
     setSocket(newSocket);
 
     return () => {
-      newSocket.disconnect();
+      // Disconnect the socket created in this useEffect
+      if (newSocket) {
+        newSocket.disconnect();
+      }
     };
   }, []);
 

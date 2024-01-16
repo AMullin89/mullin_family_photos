@@ -6,6 +6,7 @@ import Modal from "./UI/Modal";
 import axios from 'axios';
 import { UserContext } from "../store/user-context";
 import { APIContext } from "../store/api-context";
+import { useSocket } from "../store/socket-context";
 import DialogHeader from "./UI/DialogHeader";
 
 
@@ -14,6 +15,7 @@ export default function ImageUpload({open, handleCloseUpload, fetchImages}){
     const userCTX = useContext(UserContext);
     const apiCTX = useContext(APIContext);
     const fileUpload = useRef();
+    const socket = useSocket();
 
     const [file, setFile] = useState();
     const [imgPreview, setImgPreview] = useState();
@@ -36,7 +38,7 @@ export default function ImageUpload({open, handleCloseUpload, fetchImages}){
             console.log('Axios response: ', res)
         })   
         
-        fetchImages();
+        socket.emit('new_image');
         closeUpload();
     }
 
