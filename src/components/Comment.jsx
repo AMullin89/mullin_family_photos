@@ -6,6 +6,7 @@ import { UserContext } from "../store/user-context";
 import axios from "axios";
 import CommentCard from "./UI/CommentCard";
 import { APIContext } from "../store/api-context";
+import DialogHeader from "./UI/DialogHeader";
 
 export default function Comment({open, image, closeCommentDialog, comments, getComments}){
 
@@ -42,9 +43,7 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
 
     return (
         <Modal className="dialog img-upload-dialog" id="comment-dialog" open={open}>
-            <header className="dialog-header">
-                <h2>Comment on this photo!</h2>
-            </header>
+            <DialogHeader>Comment on this photo!</DialogHeader>
             <div id="img-comment">
                 <img src={image.file_path}/>
             </div>

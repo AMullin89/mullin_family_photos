@@ -6,6 +6,7 @@ import Modal from "./UI/Modal";
 import axios from 'axios';
 import { UserContext } from "../store/user-context";
 import { APIContext } from "../store/api-context";
+import DialogHeader from "./UI/DialogHeader";
 
 
 export default function ImageUpload({open, handleCloseUpload, fetchImages}){
@@ -52,9 +53,7 @@ export default function ImageUpload({open, handleCloseUpload, fetchImages}){
 
     return(
         <Modal className="dialog img-upload-dialog" open={open} id="img-upload-dialog">
-            <header className="dialog-header">
-                <h2>Upload Image</h2>
-            </header>
+            <DialogHeader>Upload a new photo!</DialogHeader>
             <p>Please select your image and give it a title!</p>
             <div id="img-preview-container">
                 { imgPreview ? <img id="image-preview" alt="Preview" src={imgPreview}/> : <p>No file to preview</p>}

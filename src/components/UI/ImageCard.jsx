@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
 import { UserContext } from '../../store/user-context';
 import { APIContext } from '../../store/api-context';
+import { useSocket } from '../../store/socket-context';
 
 
 export default function ImageCard({image, fetchImages}){
@@ -12,6 +13,7 @@ export default function ImageCard({image, fetchImages}){
     const [comments, setComments] = useState([])
     const [favourite, setFavourite] = useState(false);
     const [liked, setLiked] = useState(false);
+    const socket = useSocket();
 
     const userCTX = useContext(UserContext);
     const apiCtx = useContext(APIContext)
@@ -24,16 +26,39 @@ export default function ImageCard({image, fetchImages}){
     
     useEffect(() => {
         getComments();
-        }
-        
+        } 
     , [])
+
+
 
     function handleClickFavourite(){
         setFavourite(!favourite);
     }
 
-    function handleClickLiked(){
-        setLiked(!liked);
+    async function handleClickLiked(){
+        const formData = new FormData();
+        formData.append('image_id', image.id)
+        formData.append('user_id', userCTX.id)
+
+            
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+        
+        if(!liked){
+            formData.append('liked', true)
+            await axios.post(apiCtx + '/liked', formData, options)
+            setLiked(true);
+        }else{
+            formData.append('liked', false)
+            await axios.post(apiCtx + '/liked', formData, options)
+            setLiked(false);
+        }
+
+        socket.emit('liked_image');
+        
     }
 
     function openCommentDialog(){
@@ -67,6 +92,7 @@ export default function ImageCard({image, fetchImages}){
             <div>
                 <img src={image.file_path} alt={image.title}/>
                 <p>Uploaded by {image.first_name}</p>
+                <p>{image.likes} likes!</p>
             </div>
             <div className="img-actions">
                 <i class="fi fi-ts-comment-alt-dots" onClick={openCommentDialog}></i>

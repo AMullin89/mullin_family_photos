@@ -8,6 +8,7 @@ import { UserContext } from "../../store/user-context";
 import getDateTime from "../Util/timeDateUtil";
 import './MessageContainer.css'
 import Input from "./Input";
+import DialogHeader from "./DialogHeader";
 
 
 
@@ -43,6 +44,11 @@ export default function MessageContainer({open, handleCloseMessages}){
         getMessages()
     }, [])
 
+    useEffect(() => {
+    console.log(messages, userCtx);
+}, [messages, userCtx]);
+
+
     function handleSelectMessage(message){
         setSelectedMessage(message);
     }
@@ -53,6 +59,11 @@ export default function MessageContainer({open, handleCloseMessages}){
 
     function hideNewMessage(){
         setNewMessage(false);
+    }
+
+    function closeMessages(){
+        setSelectedMessage();
+        handleCloseMessages();
     }
 
     async function sendMessage(){
@@ -97,10 +108,7 @@ export default function MessageContainer({open, handleCloseMessages}){
 
     return (
         <Modal className="dialog img-upload-dialog" open={open} id="img-upload-dialog">
-            <header className="dialog-header">
-                {!newMessage ? <h2>Messages</h2> : <h2>New Message</h2>}
-            </header>
-
+            <DialogHeader>{!newMessage ? <h2>Messages</h2> : <h2>New Message</h2>}</DialogHeader>
             {!newMessage && 
             <>
             <div id="message-view">
@@ -115,7 +123,7 @@ export default function MessageContainer({open, handleCloseMessages}){
             </div>
             <div className="action-btns">
                 <button onClick={showNewMessage}>New Message</button>
-                <button onClick={handleCloseMessages}>Close</button>
+                <button onClick={closeMessages}>Close</button>
             </div>
             </>}
             {newMessage && 
@@ -126,7 +134,7 @@ export default function MessageContainer({open, handleCloseMessages}){
                 </select>
                 <Input ref={titleInput} label="Title" type="text" id="title" onChange={getMessageTitle} />
                 <label htmlFor="message">Message</label>
-                <textarea ref={textarea} id="message" onChange={getMessage} rows="10"></textarea>
+                <textarea ref={textarea} id="new-message-text" onChange={getMessage} rows="10"></textarea>
                 <div className="action-btns">
                     <button onClick={sendMessage}>Send</button>
                     <button onClick={hideNewMessage}>Back</button>

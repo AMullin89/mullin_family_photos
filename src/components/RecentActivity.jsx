@@ -3,13 +3,13 @@ import ActivityCard from './ActivityCard'
 import axios from 'axios';
 import './RecentActivity.css'
 import { APIContext } from '../store/api-context';
-import { io } from 'socket.io-client';
-const socket = io.connect("http://localhost:3001")
+import { useSocket } from '../store/socket-context';
 
 export default function RecentActivity(){
 
     const [activities, setActivities] = useState([]);
     const apiCtx = useContext(APIContext);
+    const socket = useSocket();
 
 
     useEffect(() => {

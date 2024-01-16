@@ -1,19 +1,15 @@
 import './App.css';
 import Header from './components/Header';
 import SignIn from './components/SignIn';
-import { useState, useEffect } from 'react';
-import UsersTab from './components/UsersTab';
-import ImageView from './components/ImageView';
-import ImageUpload from './components/ImageUpload';
-import PostsView from './components/PostsView';
+import Home from './components/Home';
+import { useState } from 'react';
 import { UserContext } from './store/user-context';
 import { APIContext } from './store/api-context';
 import { UsersContext } from './store/users-context';
+import { useSocket } from './store/socket-context';
 import axios from 'axios';
-import Message from './components/UI/MessageContainer';
-import RecentActivity from './components/RecentActivity';
-import { io } from 'socket.io-client';
-const socket = io.connect("http://localhost:3001")
+import SignUp from './components/SignUp';
+
 
 
 function App() {
@@ -21,61 +17,35 @@ function App() {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const [isUserSignedIn, setIsUserSignedIn] = useState(false);
-  const [imagesData, setImagesData] = useState([]);
+  
   const [showUpload, setShowUpload] = useState(false)
   const [apiUrl, setApiUrl] = useState('http://localhost:3001');
   const [showMessages, setShowMessages] = useState(false)
+  const [signInScreen, setSignInScreen] = useState(true);
 
+  const socket = useSocket();
 
-  
-
-
-  async function fetchImages(){
-
-    try {
-      const response = await axios.get(apiUrl + '/images');
-      setImagesData(response.data);
-      console.log(imagesData);
-    } catch (error) {
-      console.error('Failed to get images', error);
+  function toggleSignIn(){
+    setSignInScreen(!signInScreen);
     }
-  }
-
-  async function fetchUsers(){
-    try {
-      const response = await axios.get(apiUrl + '/users');
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Failed to get users', error)
-    }      
-  }
-
-  useEffect(() => {
-    fetchUsers();
-    fetchImages();
-  }, [isUserSignedIn]);
-
-  useEffect(() => {
-            socket.on('update_users', ()=> {
-            fetchUsers();
-        })
-  }, [socket])
 
   function handleShowUpload(){
     setShowUpload(true);
+  }
+
+  function handleShowMessages(){
+    setShowMessages(true);
+  }
+  
+  function handleCloseMessages(){
+    setShowMessages(false);
   }
 
   function handleCloseUpload(){
     setShowUpload(false);
   }
 
-  function handleShowMessages(){
-    setShowMessages(true);
-  }
-
-  function handleCloseMessages(){
-    setShowMessages(false);
-  }
+  
 
   async function handleSignIn(email, password){
 
@@ -91,14 +61,12 @@ function App() {
 
     try {
       const response = await axios.post(apiUrl + '/signin', formData, options);
-      setUser(response.data);
+      setUser(response.data)
       setIsUserSignedIn(true);
       socket.emit("sign_in");
     } catch (error) {
       console.error('Login error:', error);
     }
-
-    
   };
 
   async function handleSignOut(){
@@ -116,42 +84,25 @@ function App() {
       await axios.post(apiUrl + '/signout', formData, options);
       setIsUserSignedIn(false);
       setUser({});
-      socket.emit('sign_in')
+      socket.emit('sign_in', user)
     } catch (error) {
       console.error('Logout error:', error);
     }
-    
-
- 
   }
 
   return (
-    <UsersContext.Provider value={users}>
+          <UsersContext.Provider value={users}>
     <APIContext.Provider value={apiUrl}>
       <UserContext.Provider value={user}>
       <div className="App">
         <Header isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload} handleShowMessages={handleShowMessages} handleSignOut={handleSignOut}/>
-        {!isUserSignedIn && <SignIn handleSignIn={handleSignIn}/>}
-        {isUserSignedIn && 
-        <div>
-        <h3 id="welcome-message">Welcome, {user.first_name}</h3>
-        <div id="user-interface">
-          <div id="activity-users-container">
-            <RecentActivity/>
-            <UsersTab users={users}/>
-          </div>
-          <ImageView imagesData={imagesData} fetchImages={fetchImages} handleShowUpload={handleShowUpload}/>
-          <PostsView/>
-        </div>
-        <ImageUpload open={showUpload} handleCloseUpload={handleCloseUpload} fetchImages={fetchImages}/>
-        <Message open={showMessages} handleCloseMessages={handleCloseMessages}/>
-      </div>
-      }
+        <SignIn handleSignIn={handleSignIn} open={signInScreen &&!isUserSignedIn} toggleSignIn={toggleSignIn} />
+        <SignUp open={!signInScreen && !isUserSignedIn} toggleSignIn={toggleSignIn}/>
+        {isUserSignedIn && <Home user={user} setUsers={setUsers} handleShowUpload={handleShowUpload} showUpload={showUpload} showMessages={showMessages} handleCloseUpload={handleCloseUpload} handleCloseMessages={handleCloseMessages} />}
     </div>
     </UserContext.Provider>
     </APIContext.Provider>
     </UsersContext.Provider>
-
   );
 }
 

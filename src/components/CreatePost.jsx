@@ -4,8 +4,9 @@ import { useState, useContext } from "react";
 import { UserContext } from "../store/user-context";
 import getDateTime from "./Util/timeDateUtil";
 import { APIContext } from "../store/api-context";
-import { io } from 'socket.io-client';
-const socket = io.connect("http://localhost:3001")
+import { useSocket } from "../store/socket-context";
+import DialogHeader from "./UI/DialogHeader";
+
 
 export default function CreatePost({open, handleCloseCreatePost, getPosts}){
 
@@ -13,7 +14,7 @@ export default function CreatePost({open, handleCloseCreatePost, getPosts}){
     const userCTX = useContext(UserContext);
     const apiCTX = useContext(APIContext);
 
-    
+    const socket = useSocket();
 
     
 
@@ -53,11 +54,8 @@ export default function CreatePost({open, handleCloseCreatePost, getPosts}){
     }
     return (
         <Modal className="dialog img-upload-dialog" open={open}>
-            <header className="dialog-header">
-                <h2>Create New Post</h2>
-            </header>
+            <DialogHeader>Create a new post!</DialogHeader>
             <p>What's on your mind?</p>
-
             <div className="dialog-inputs">
                 <textarea onChange={getUserPost} rows="5" maxLength="255"></textarea>
             </div>

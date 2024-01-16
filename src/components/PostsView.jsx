@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import CreatePost from './CreatePost'
 import axios from 'axios'
 
+
 export default function PostsView(){
 
     const [showCreatePost, setShowCreatePost] = useState(false)
@@ -18,6 +19,8 @@ export default function PostsView(){
 
     useEffect(() => {
         getPosts()
+
+
     }, [])
     
     function handleShowCreatePost(){

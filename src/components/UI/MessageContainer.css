@@ -4,15 +4,17 @@
 }
 
 #message {
-    border-left: 2px solid black;
     padding-left: 1rem;
+    padding-right: 1rem;
     margin-top: 1rem;
-    width: 100%;
+    width: 60%;
+    text-wrap: wrap;
 }
 
 #messages-list {
     overflow-y: auto;
-    width: 75%;
+    width: 18rem;
+    border-right: 2px solid black;
 }
 
 #new-message {
@@ -23,17 +25,11 @@
     margin: 1rem auto;
 }
 
-select {
+select, input, textarea {
     font-family: inherit;
     padding: 0.5rem;
-    text-align: center;
     font-weight: bold;
     font-size: 1.2rem;
     border-radius: 10px;
 }
 
-textarea {
-    font-family: inherit;
-    font-size: 1.1rem;
-    border-radius: 10px;
-}
