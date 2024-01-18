@@ -1,0 +1,10 @@
+.reply-card-container {
+    background-color: #1d306d;
+    color: white;
+    border-radius: 10px;
+    padding: 0.2rem;
+}
+
+.reply-actions {
+    display: flex;
+}

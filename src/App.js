@@ -7,6 +7,7 @@ import { UserContext } from './store/user-context';
 import { APIContext } from './store/api-context';
 import { UsersContext } from './store/users-context';
 import { useSocket } from './store/socket-context';
+import { ImagesContext } from './store/images-context';
 import axios from 'axios';
 import SignUp from './components/SignUp';
 import { MessagesContext } from './store/messages-context';
@@ -126,21 +127,21 @@ function App() {
   }
 
   return (
-    <MessagesContext.Provider value={messages}>
-    <UsersContext.Provider value={users}>
-    <APIContext.Provider value={apiUrl}>
-      <UserContext.Provider value={user}>
-      <div className="App">
-        <Header unreadMessages={unreadMessages} isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload} handleShowMessages={handleShowMessages} handleSignOut={handleSignOut}/>
-        <SignIn handleSignIn={handleSignIn} open={signInScreen &&!isUserSignedIn} toggleSignIn={toggleSignIn} />
-        <SignUp open={!signInScreen && !isUserSignedIn} toggleSignIn={toggleSignIn}/>
-        {isUserSignedIn && <Home user={user} setUsers={setUsers} handleShowUpload={handleShowUpload} showUpload={showUpload} showMessages={showMessages} handleCloseUpload={handleCloseUpload} handleCloseMessages={handleCloseMessages} />}
-    </div>
-    </UserContext.Provider>
-    </APIContext.Provider>
-    </UsersContext.Provider>
-    </MessagesContext.Provider>
-
+    
+<MessagesContext.Provider value={messages}>
+<UsersContext.Provider value={users}>
+<APIContext.Provider value={apiUrl}>
+<UserContext.Provider value={user}>
+  <div className="App">
+    <Header unreadMessages={unreadMessages} isUserSignedIn={isUserSignedIn} handleShowUpload={handleShowUpload} handleShowMessages={handleShowMessages} handleSignOut={handleSignOut}/>
+    <SignIn handleSignIn={handleSignIn} open={signInScreen &&!isUserSignedIn} toggleSignIn={toggleSignIn} />
+    <SignUp open={!signInScreen && !isUserSignedIn} toggleSignIn={toggleSignIn}/>
+    {isUserSignedIn && <Home user={user} setUsers={setUsers} handleShowUpload={handleShowUpload} showUpload={showUpload} showMessages={showMessages} handleCloseUpload={handleCloseUpload} handleCloseMessages={handleCloseMessages} />}
+  </div>
+</UserContext.Provider>
+</APIContext.Provider>
+</UsersContext.Provider>
+</MessagesContext.Provider>
   );
 }
 

@@ -6,20 +6,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 0.5rem 0 0.5rem;
+    padding: 0 0.5rem 0.5rem 0.5rem;
 }
 
 .author {
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
     text-decoration: underline;
     text-align: left !important;
 }
 
 .comment{
     font-style: normal !important;
-    text-align: center !important;
+    text-align: left !important;
     font-weight: 350;
     padding-bottom: 0.5rem;
     color: white;
+}
+
+.date-time {
+    text-align: right;
+    width: 100%;
 }
 

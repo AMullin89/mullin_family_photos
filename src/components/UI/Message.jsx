@@ -8,10 +8,14 @@ export default function Message({message, handleSelectMessage}){
     }
 
     return (
-        <div className="message-card " onClick={() => handleSelectMessage(message)}>
+        <div className="message-card" onClick={() => handleSelectMessage(message)}>
+            {message.unread === 1 && <p className="new-marker">New!</p>}
+            <div  >
             <h3>{message.sender_first_name}</h3>
             <p className="date-time">{message.sent}</p>
             <p>{message.title}</p>
         </div>
+        </div>
+        
     )
 }

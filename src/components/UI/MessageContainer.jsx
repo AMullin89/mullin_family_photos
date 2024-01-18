@@ -48,8 +48,10 @@ export default function MessageContainer({open, handleCloseMessages}){
         }
     }
         getMessages()
-        console.log(messages)
-    }, [])
+        socket.on('update_messages', () => {
+            getMessages()
+        })
+    }, [socket])
 
         useEffect(() => {
         function getUnreadMessages(){
@@ -62,8 +64,24 @@ export default function MessageContainer({open, handleCloseMessages}){
         }
     }, [messages])
 
-    function handleSelectMessage(message){
+    async function handleSelectMessage(message){
         setSelectedMessage(message);
+
+        if(message.unread){
+            const formData = new FormData();
+            formData.append('message_id', message.id);
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            await axios.post(apiCtx + '/read_message', formData, options)
+
+            socket.emit('read_message');
+        }
+
+        
     }
 
     function showNewMessage(){

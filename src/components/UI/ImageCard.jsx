@@ -5,6 +5,8 @@ import axios from 'axios';
 import { UserContext } from '../../store/user-context';
 import { APIContext } from '../../store/api-context';
 import { useSocket } from '../../store/socket-context';
+import { ImagesContext } from '../../store/images-context';
+import ImageDetail from './ImageDetail';
 
 
 export default function ImageCard({image, fetchImages}){
@@ -13,26 +15,69 @@ export default function ImageCard({image, fetchImages}){
     const [comments, setComments] = useState([])
     const [favourite, setFavourite] = useState(false);
     const [liked, setLiked] = useState(false);
+    const [imageIndex, setImageIndex] = useState();
+    const [detailOpen, setDetailOpen] = useState(false)
+    const [allComments, setAllComments] = useState([])
+
     const socket = useSocket();
+
 
     const userCTX = useContext(UserContext);
     const apiCtx = useContext(APIContext)
+    const imagesCtx = useContext(ImagesContext)
 
     async function getComments(){
             const response = await axios.get(apiCtx + '/comments')
+            setAllComments(response.data);
             const comments = response.data.filter(o => o.image_id === image.id);
             setComments(comments)
     }
     
     useEffect(() => {
         getComments();
+        socket.on('update_comments', () => {
+            getComments();
+        })
         } 
-    , [])
+    , [socket])
 
+    useEffect(() => {
+        function checkIfLikedByUser(){
+            if(image.liker_id === userCTX.id && image.liked_image === image.id){
+                setLiked(true);
+            }
+        }
+        function checkIfFavouritedByUser(){
+            if(image.favourite_user === userCTX.id && image.favourite_image === image.id){
+                setFavourite(true);
+            }
+        }
+        checkIfLikedByUser()
+        checkIfFavouritedByUser();
+    }, [image])
 
+    async function handleClickFavourite(){
 
-    function handleClickFavourite(){
-        setFavourite(!favourite);
+        const formData = new FormData();
+        formData.append('image_id', image.id)
+        formData.append('user_id', userCTX.id)
+
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+
+        if(!favourite){
+           formData.append('favourite', true)
+           await axios.post(apiCtx + '/favourite', formData, options)
+           setFavourite(true)
+        } else {
+            formData.append('favourite', false)
+            await axios.post(apiCtx + '/favourite', formData, options)
+            setFavourite(false)
+        }
+
     }
 
     async function handleClickLiked(){
@@ -72,6 +117,16 @@ export default function ImageCard({image, fetchImages}){
         setCommentOpen(false);
     }
 
+    function getImageIndex(){
+       const result =  imagesCtx.findIndex(i => i.id === image.id)
+       setImageIndex(result);
+       setDetailOpen(true)
+    }
+
+    function handleCloseDetail(){
+        setDetailOpen(false);
+    }
+
     async function deleteImage(){
         const formData = new FormData();
         formData.append('image_id', image.id);
@@ -93,9 +148,11 @@ export default function ImageCard({image, fetchImages}){
         <div className="image-container">
             <h4>{image.title}</h4>
             <div>
-                <img src={image.file_path} alt={image.title}/>
-                <p>Uploaded by {image.first_name}</p>
-                <p>{image.likes} likes!</p>
+                <img onClick={getImageIndex} src={image.file_path} alt={image.title}/>
+                <div className="img-info">
+                    <p>{image.likes} likes!</p>
+                    <p>Uploaded by {image.first_name}</p>
+                </div>  
             </div>
             <div className="img-actions">
                 <i class="fi fi-ts-comment-alt-dots" onClick={openCommentDialog}></i>
@@ -104,6 +161,7 @@ export default function ImageCard({image, fetchImages}){
                 {userCTX.id === image.user_id && <i onClick={deleteImage} class="fi fi-rs-trash"></i>}
             </div>
         <Comment image={image} open={commentOpen} closeCommentDialog={closeCommentDialog} comments={comments} getComments={getComments} />
+        <ImageDetail handleCloseDetail={handleCloseDetail} imageIndex={imageIndex} open={detailOpen} allComments={allComments} image={image} />
         </div>
     )
 }

@@ -33,6 +33,7 @@ export default function CommentCard({comment}){
             <div>
                 <h4 className="author">{comment.first_name}</h4>
                 <p className="comment">{comment.comment}</p>
+                <p className="date-time">{comment.date}</p>
             </div>
             {userCTX.id === comment.user_id && <i onClick={deleteComment} class="fi fi-rs-trash"></i>}
         </div>

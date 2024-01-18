@@ -7,6 +7,8 @@ import axios from "axios";
 import CommentCard from "./UI/CommentCard";
 import { APIContext } from "../store/api-context";
 import DialogHeader from "./UI/DialogHeader";
+import getDateTime from "./Util/timeDateUtil";
+import { useSocket } from "../store/socket-context";
 
 export default function Comment({open, image, closeCommentDialog, comments, getComments}){
 
@@ -14,6 +16,7 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
     const textArea = useRef();
     const userCtx = useContext(UserContext);
     const apiCtx = useContext(APIContext);
+    const socket = useSocket();
 
     function handleInputChange(event){
         setInput(event.target.value)
@@ -21,10 +24,12 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
 
     async function handleSubmit(){
 
+        const dateTime = getDateTime();
         const formData = new FormData()
         formData.append('comment', input);
         formData.append('image_id', image.id);
         formData.append('user_id', userCtx.id);
+        formData.append('date', dateTime);
         textArea.current.value = '';
         setInput('');
 
@@ -39,11 +44,13 @@ export default function Comment({open, image, closeCommentDialog, comments, getC
             console.log("Axios response:", res)
         })
         .then(getComments());
+
+        socket.emit('new_comment')
     }
 
     return (
         <Modal className="dialog img-upload-dialog" id="comment-dialog" open={open}>
-            <DialogHeader>Comment on this photo!</DialogHeader>
+            <DialogHeader close={closeCommentDialog}>Comment on this photo!</DialogHeader>
             <div id="img-comment">
                 <img src={image.file_path}/>
             </div>

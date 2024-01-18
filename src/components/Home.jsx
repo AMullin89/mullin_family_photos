@@ -9,6 +9,7 @@ import axios from "axios";
 import { APIContext } from "../store/api-context";
 import { UsersContext } from "../store/users-context";
 import MessageContainer from "./UI/MessageContainer";
+import { ImagesContext } from "../store/images-context";
 
 
 
@@ -66,7 +67,9 @@ export default function Home({user, setUsers, isUserSignedIn, handleShowUpload, 
             <RecentActivity/>
             <UsersTab users={usersCtx}/>
           </div>
-          <ImageView imagesData={imagesData} fetchImages={fetchImages} handleShowUpload={handleShowUpload}/>
+          <ImagesContext.Provider value={imagesData}>
+              <ImageView imagesData={imagesData} fetchImages={fetchImages} handleShowUpload={handleShowUpload}/>
+          </ImagesContext.Provider>
           <PostsView/>
         </div>
         <ImageUpload open={showUpload} handleCloseUpload={handleCloseUpload} fetchImages={fetchImages}/>

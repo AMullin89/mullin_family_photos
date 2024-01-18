@@ -8,6 +8,13 @@
     padding: 0.2rem 0 0.2rem 0;
 }
 
+.new-marker {
+    margin: 0;
+    padding-left: 0.5rem;
+    color: white;
+    text-align: left !important;
+}
+
 .message-card h3 {
     margin: 0;
     font-size: 1rem;

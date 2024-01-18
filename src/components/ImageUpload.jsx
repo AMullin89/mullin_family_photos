@@ -55,7 +55,7 @@ export default function ImageUpload({open, handleCloseUpload, fetchImages}){
 
     return(
         <Modal className="dialog img-upload-dialog" open={open} id="img-upload-dialog">
-            <DialogHeader>Upload a new photo!</DialogHeader>
+            <DialogHeader close={closeUpload}>Upload a new photo!</DialogHeader>
             <p>Please select your image and give it a title!</p>
             <div id="img-preview-container">
                 { imgPreview ? <img id="image-preview" alt="Preview" src={imgPreview}/> : <p>No file to preview</p>}

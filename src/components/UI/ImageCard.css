@@ -17,10 +17,19 @@
     width: 15rem;
 }
 
+.image-container img:hover {
+    cursor: pointer;
+}
+
 .image-container p {
     margin: 0;
     text-align: right;
     font-style: italic;
+}
+
+.img-info {
+    display: flex;
+    justify-content: space-between;
 }
 
 .img-actions {

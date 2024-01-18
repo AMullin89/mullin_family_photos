@@ -13,6 +13,7 @@
 
 #messages-list {
     overflow-y: auto;
+    height: 24rem;
     width: 18rem;
     border-right: 2px solid black;
 }

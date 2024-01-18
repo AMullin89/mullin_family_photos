@@ -19,8 +19,68 @@
     font-size: 0.9rem;
 }
 
+.post-likes {
+    font-style: italic;
+    margin-bottom: 0;
+    text-align: right;
+    font-size: smaller;
+}
+
+.replies-actions-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .post-actions {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 1rem;
+}
+
+.reply-status {
+    font-style: italic;
+    font-size: 0.8rem;
+    display: inline;
+}
+
+.reply-status:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.replies-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    max-height: 10rem;
+    margin-top: 0.5rem;
+    border-radius: 10px;
+}
+
+.replies-container::-webkit-scrollbar {
+    width: 10px !important;
+}
+
+.reply-form {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+    gap: 1rem;
+    border-top: 2px solid black;
+}
+
+.reply-form input {
+    width: 70%;
+    padding: 0 0 0 0.5rem;
+    border-radius: 5px;
+    font-weight: 400;
+}
+
+.reply-form i {
+    font-size: 1.5rem;
 }

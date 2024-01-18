@@ -46,7 +46,7 @@ export default function CreatePost({open, handleCloseCreatePost, getPosts}){
                     .then(getPosts())
                     .then(handleCloseCreatePost());
 
-        
+        socket.emit('new_post');
     
     }
     function getUserPost(event){
@@ -54,7 +54,7 @@ export default function CreatePost({open, handleCloseCreatePost, getPosts}){
     }
     return (
         <Modal className="dialog img-upload-dialog" open={open}>
-            <DialogHeader>Create a new post!</DialogHeader>
+            <DialogHeader close={handleCloseCreatePost}>Create a new post!</DialogHeader>
             <p>What's on your mind?</p>
             <div className="dialog-inputs">
                 <textarea onChange={getUserPost} rows="5" maxLength="255"></textarea>
